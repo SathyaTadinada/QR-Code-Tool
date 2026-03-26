@@ -1,16 +1,16 @@
 # Clipboard QR Code Tool
 
-A lightweight macOS command-line utility that works both ways with QR codes, entirely through the clipboard.
+A small macOS utility that converts between URLs and QR codes using the clipboard.
 
-- **Copy a URL** → run the script → a QR code image is copied to your clipboard, ready to paste anywhere.
-- **Copy a screenshot or image containing a QR code** → run the script → the decoded text is copied to your clipboard.
+- **Copy a URL** -> run the script -> a QR code image is copied to your clipboard, ready to paste anywhere.
+- **Copy an image containing a QR code** -> run the script -> the decoded text is copied to your clipboard.
 
 ## How it works
 
-The script inspects your clipboard on each run:
+The script checks your clipboard on each run:
 
 1. If it finds a URL, it uses `pyqrcode` to generate a QR code PNG and copies it as an image via `pyperclipimg`.
-2. If it finds an image, it passes it directly to `pyzbar` (backed by the native `zbar` library) for decoding and copies the result as text via `pyperclip`.
+2. If it finds an image, it passes it to `pyzbar` (backed by the native `zbar` library) for decoding and copies the result as text via `pyperclip`.
 
 ## Requirements
 
@@ -25,17 +25,17 @@ The script inspects your clipboard on each run:
 brew install zbar
 
 # 2. Clone the repo
-git clone https://github.com/YOUR_USERNAME/qr-code-tool.git
-cd qr-code-tool
+git clone https://github.com/SathyaTadinada/QR-Code-Tool.git
+cd QR-Code-Tool
 
-# 3. Install Python dependencies (using uv)
+# 3. Install Python dependencies
 uv add pillow pyperclip pyperclipimg pyqrcode pypng pyzbar
 
 # or with pip
 pip install pillow pyperclip pyperclipimg pyqrcode pypng pyzbar
 ```
 
-> **Note on zbar + macOS:** `pyzbar` uses `ctypes.util.find_library` to locate the zbar shared library, which doesn't search Homebrew paths by default. This project includes a small patch that checks `/opt/homebrew/lib` (Apple Silicon) and `/usr/local/lib` (Intel) before falling back to the system search, so no manual `DYLD_LIBRARY_PATH` export is needed.
+> **Note:** `pyzbar` looks for the zbar shared library in standard system paths, which does not include Homebrew by default. The script patches this at startup to check `/opt/homebrew/lib` (Apple Silicon) and `/usr/local/lib` (Intel), so you don't need to set `DYLD_LIBRARY_PATH` manually.
 
 ## Usage
 
@@ -47,11 +47,11 @@ uv run qr_code.py
 python qr_code.py
 ```
 
-For convenience, you can bind this to a keyboard shortcut or add it to your `$PATH`.
+You can bind this to a keyboard shortcut or add it to your `$PATH` for quick access.
 
 ## Roadmap
 
-- [ ] macOS menu bar app (likely via [`rumps`](https://github.com/jaredks/rumps)) so the conversion is a single button press from the menu bar
+- [ ] macOS menu bar app via [`rumps`](https://github.com/jaredks/rumps) for one-click conversions
 - [ ] Support for reading QR codes from files (drag-and-drop)
 - [ ] Distributable `.app` bundle via PyInstaller
 
